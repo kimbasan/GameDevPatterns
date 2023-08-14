@@ -5,13 +5,16 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     [Header("Player")]
-    [SerializeField] private PlayerMovement playerMovements;
+    [SerializeField] private PlayerInputHandler playerInputs;
+    [SerializeField] private PlayerCollider playerCollider;
     [Header("Action Images")]
     [SerializeField] private Image up;
     [SerializeField] private Image down;
     [SerializeField] private Image left;
     [SerializeField] private Image right;
     [SerializeField] private Image skip;
+    [SerializeField] private Image undo;
+    [SerializeField] private Image swap;
 
     [Header("Result Panels")]
     [SerializeField] private GameObject gameOverPanel;
@@ -19,8 +22,8 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        playerMovements.PlayerActionHappened += PlayerMovements_PlayerActionHappened;
-        playerMovements.GameOver += PlayerMovements_GameOver;
+        playerInputs.InputHappened += PlayerMovements_PlayerActionHappened;
+        playerCollider.GameOver += PlayerMovements_GameOver;
     }
 
     private void PlayerMovements_GameOver(object sender, System.EventArgs e)
@@ -44,6 +47,9 @@ public class UIController : MonoBehaviour
             case ActionType.Left: FlashImage(left); break;
             case ActionType.Right: FlashImage(right); break;
             case ActionType.Skip: FlashImage(skip); break;
+            case ActionType.Undo: FlashImage(undo); break;
+            case ActionType.Swap: FlashImage(swap); break;
+
         }
         
     }
@@ -57,7 +63,7 @@ public class UIController : MonoBehaviour
 
     private void OnDisable()
     {
-        playerMovements.PlayerActionHappened -= PlayerMovements_PlayerActionHappened;
-        playerMovements.GameOver -= PlayerMovements_GameOver;
+        playerInputs.InputHappened -= PlayerMovements_PlayerActionHappened;
+        playerCollider.GameOver -= PlayerMovements_GameOver;
     }
 }

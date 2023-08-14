@@ -4,15 +4,36 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField]
-    private PlayerMovement player;
+    private PlayerInputHandler player;
 
     [SerializeField]
-    private List<EnemyMovement> enemies;
+    private List<MovementActor> enemies;
 
-    private Vector3[] directions = new Vector3[] { Vector3.forward, Vector3.back, Vector3.left, Vector3.right, Vector3.zero};
+    public List<MovementActor> GetEnemies()
+    {
+        return enemies;
+    }
+
+    public void SetEnemies(List<MovementActor> enemies)
+    {
+        this.enemies = enemies;
+    }
+
     void Start()
     {
-        player.PlayerActionHappened += Player_PlayerActionHappened;
+        player.MoveHappened += Player_PlayerActionHappened;
+        player.UndoHappened += Player_UndoHappened;
+    }
+
+    private void Player_UndoHappened(object sender, System.EventArgs e)
+    {
+        foreach (var enemy in enemies)
+        {
+            if (enemy.isActiveAndEnabled)
+            {
+                enemy.UndoMove();
+            }
+        }
     }
 
     private void Player_PlayerActionHappened(object sender, System.EventArgs e)
@@ -21,18 +42,13 @@ public class EnemyController : MonoBehaviour
         {
             if (enemy.isActiveAndEnabled)
             {
-                enemy.DoMove(GetRandomDirection());
+                enemy.DoMove();
             }
         }
     }
 
-    private Vector3 GetRandomDirection()
-    {
-        return directions[Random.Range(0, directions.Length)];
-    }
-
     private void OnDisable()
     {
-        player.PlayerActionHappened -= Player_PlayerActionHappened;
+        player.InputHappened -= Player_PlayerActionHappened;
     }
 }

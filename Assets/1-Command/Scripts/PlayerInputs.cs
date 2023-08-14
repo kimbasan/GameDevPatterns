@@ -71,6 +71,24 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Undo"",
+                    ""type"": ""Button"",
+                    ""id"": ""48b829e9-802f-4008-8877-7024751e4f26"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeActor"",
+                    ""type"": ""Button"",
+                    ""id"": ""61f65e04-04f3-46a6-be57-5519d74d9121"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -128,6 +146,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""MoveRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bd8e124b-98be-4a50-b19f-901c14552c0a"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Undo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cfa207bd-5b2d-4986-8b83-265510267fcc"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeActor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -141,6 +181,8 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m__2DMovement_MoveDown = m__2DMovement.FindAction("MoveDown", throwIfNotFound: true);
         m__2DMovement_MoveLeft = m__2DMovement.FindAction("MoveLeft", throwIfNotFound: true);
         m__2DMovement_MoveRight = m__2DMovement.FindAction("MoveRight", throwIfNotFound: true);
+        m__2DMovement_Undo = m__2DMovement.FindAction("Undo", throwIfNotFound: true);
+        m__2DMovement_ChangeActor = m__2DMovement.FindAction("ChangeActor", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -207,6 +249,8 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m__2DMovement_MoveDown;
     private readonly InputAction m__2DMovement_MoveLeft;
     private readonly InputAction m__2DMovement_MoveRight;
+    private readonly InputAction m__2DMovement_Undo;
+    private readonly InputAction m__2DMovement_ChangeActor;
     public struct _2DMovementActions
     {
         private @PlayerInputs m_Wrapper;
@@ -216,6 +260,8 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @MoveDown => m_Wrapper.m__2DMovement_MoveDown;
         public InputAction @MoveLeft => m_Wrapper.m__2DMovement_MoveLeft;
         public InputAction @MoveRight => m_Wrapper.m__2DMovement_MoveRight;
+        public InputAction @Undo => m_Wrapper.m__2DMovement_Undo;
+        public InputAction @ChangeActor => m_Wrapper.m__2DMovement_ChangeActor;
         public InputActionMap Get() { return m_Wrapper.m__2DMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -240,6 +286,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @MoveRight.started += instance.OnMoveRight;
             @MoveRight.performed += instance.OnMoveRight;
             @MoveRight.canceled += instance.OnMoveRight;
+            @Undo.started += instance.OnUndo;
+            @Undo.performed += instance.OnUndo;
+            @Undo.canceled += instance.OnUndo;
+            @ChangeActor.started += instance.OnChangeActor;
+            @ChangeActor.performed += instance.OnChangeActor;
+            @ChangeActor.canceled += instance.OnChangeActor;
         }
 
         private void UnregisterCallbacks(I_2DMovementActions instance)
@@ -259,6 +311,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @MoveRight.started -= instance.OnMoveRight;
             @MoveRight.performed -= instance.OnMoveRight;
             @MoveRight.canceled -= instance.OnMoveRight;
+            @Undo.started -= instance.OnUndo;
+            @Undo.performed -= instance.OnUndo;
+            @Undo.canceled -= instance.OnUndo;
+            @ChangeActor.started -= instance.OnChangeActor;
+            @ChangeActor.performed -= instance.OnChangeActor;
+            @ChangeActor.canceled -= instance.OnChangeActor;
         }
 
         public void RemoveCallbacks(I_2DMovementActions instance)
@@ -283,5 +341,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnMoveDown(InputAction.CallbackContext context);
         void OnMoveLeft(InputAction.CallbackContext context);
         void OnMoveRight(InputAction.CallbackContext context);
+        void OnUndo(InputAction.CallbackContext context);
+        void OnChangeActor(InputAction.CallbackContext context);
     }
 }
